@@ -1,0 +1,33 @@
+.header {
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #000; /* Adjust background color as needed */
+
+  }
+  
+  .header-logo {
+    height: 30px; /* Adjust logo size */
+  }
+  
+  .connect-wallet {
+    padding: 5px 10px;
+    background-color: #27A431;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px; /* Optional: rounded corners */
+  }
+  
+  .connect-wallet:hover {
+    background-color: #1E8C2A; /* Darker shade on hover */
+  }
+
+  @media (max-width: 768px) {
+    .header{
+        display: flex;
+    }
+
+  }
+  

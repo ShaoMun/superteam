@@ -1,0 +1,134 @@
+
+  
+  .sidebar-container {
+    width: 15%;
+    background-color: black;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content:space-between;
+    height: 100vh;
+    position: relative;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .sidebar-upper ul,
+  .sidebar-lower ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-left: 1.2%;
+  }
+  
+  .sidebar-upper ul a,
+  .sidebar-lower ul a {
+    text-decoration: none;
+    color: #fff;
+  }
+  
+  .sidebar-upper ul a li,
+  .sidebar-lower ul a li {
+    padding: 12px;
+    cursor: pointer;
+  }
+
+  .sidebar-upper ul a li img{
+    width: 22%;
+    display: inline-block;
+  }
+  
+  .sidebar-upper ul a li:hover,
+  .sidebar-lower ul a li:hover {
+    background-color: #232323;
+  }
+  
+  .sidebar-upper img {
+    width: 66%;
+    padding: 10px;
+    display: block;
+    margin-left: 1.5%;
+  }
+  
+  .sidebar-lower button {
+    margin: 10px;
+    padding: 10px;
+    background-color: #27A431;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  .sidebar-lower button:hover {
+    background-color: #27A470;
+  }
+  
+  .social-media {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px 0;
+  }
+  
+  .social-media a {
+    text-decoration: none;
+  }
+  
+  .social-media img {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .hamburger {
+    display: none; /* Initially hidden */
+    position: absolute;
+    top: 54px;
+    left: 18px;
+    cursor: pointer;
+    z-index: 1000;
+  }
+  
+  .hamburger img {
+    width: 30px;
+    height: 30px;
+  }
+
+  
+  /* Media query for smaller screens */
+  @media (max-width: 768px) {
+    .sidebar-container {
+      transform: translateX(-200%); /* Hide the sidebar off-screen */
+      justify-content: space-between;
+      font-size: medium;
+      width: 42%;
+      height: 92vh;
+    }
+  
+    .hamburger {
+      display: block; /* Show the hamburger icon */
+    }
+  
+
+  .sidebar-upper ul{
+    margin-top: 24%;
+  }
+
+  .sidebar-upper img{
+    display: none;
+  }
+
+  .sidebar-lower button{
+    display: none;
+  }
+
+  .social-media img {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* When the sidebar is active (toggle class) */
+  .sidebar-container.active {
+    transform: translateX(0); /* Show the sidebar */
+
+  }
+  
+}

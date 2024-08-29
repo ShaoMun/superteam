@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+body {
+  background-color: black;
+  color: white;
+}
+.page-container {
+  display: flex;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-container {
+    flex-direction: column; /* Adjust layout for small screens */
+  }
+}
