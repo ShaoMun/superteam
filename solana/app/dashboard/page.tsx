@@ -1,26 +1,10 @@
 'use client'
 
-import React, { useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import { PieChart, Pie, Cell } from 'recharts';
 import "../../styles/tokens.css"
 
 const Tokens = () => {
-  const [connected, setConnected] = useState(false);
-
-  const connectWallet = async () => {
-    if (window.solana && window.solana.isPhantom) {
-      try {
-        const response = await window.solana.connect();
-        console.log('Connected with Public Key:', response.publicKey.toString());
-        setConnected(true);
-      } catch (error) {
-        console.error(error);
-      }
-    } else {
-      window.open('https://phantom.app/', '_blank');
-    }
-  };
 
   // Dummy data for charts
   const performanceData = [
@@ -42,8 +26,21 @@ const Tokens = () => {
 
   return (
     <div className="dashboard">      
-      <div className="dashboard-grid">
-      <div className="dashboard-item">
+      <div className="dashboard-grid">      
+        <div className="dashboard-item">
+          <h1>Performance</h1>
+          <div className="chart-container">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={performanceData}>
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Line type="monotone" dataKey="value" stroke="#8884d8" />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </div> 
+
+        <div className="dashboard-item transact-container">
           <h2>Recent Transactions</h2>
           <table className="transaction-table">
             <thead>
@@ -62,20 +59,10 @@ const Tokens = () => {
             </tbody>
           </table>
           <a href="#" className="view-all">View all transactions &gt;</a>
-        </div>
-        <div className="dashboard-item">
-          <h1>Performance</h1>
-          <div className="chart-container">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={performanceData}>
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Line type="monotone" dataKey="value" stroke="#8884d8" />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </div>    
+        </div>   
       </div>
+
+      
       
       <h3>Assets</h3>
       <div className="dashboard-grid">
