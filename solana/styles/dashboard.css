@@ -1,0 +1,42 @@
+.container{
+    display: flex;
+}
+
+.sub-container{
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    margin-left: 15%;
+}
+
+.directory{
+    margin-top: 3%;
+}
+
+.directory a{
+    margin-left: 4%;
+}
+
+.directory a:hover{
+    color: #a4dbc4;
+}
+
+.directory .active {
+    font-weight: bold;
+    color: #0fa265;
+    text-decoration: underline;
+}
+
+.directory .active:hover{
+    color: #48ac82;
+}
+
+@media (max-width: 768px) {
+    .directory a{
+        margin-left: 13%;
+    }
+
+    .sub-container{
+        margin-left: 0;
+    }
+}

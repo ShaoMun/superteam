@@ -1,0 +1,150 @@
+.wallet-container {
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  margin: 0 auto;
+  margin-top: 0.5%;
+}
+
+.wallet-detail {
+  flex: 1;
+  margin-left: 3%;
+}
+
+.wallet-address {
+  font-size: 15px;
+  margin-bottom: 10px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  z-index: 1;
+}
+
+.wallet-address button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 5px;
+}
+
+.wallet-address button img {
+  width: 12px;
+  height: 12px;
+}
+
+.dropdown {
+  position: absolute;
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 5px;
+  padding: 10px;
+  z-index: 1;
+  top: 100%;
+  left: 0;
+  width: 31%;
+  margin-top: 5px;
+}
+
+.copy-address {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 5px;
+}
+
+.copy-address svg {
+  margin-right: 5px;
+  display: inline-block;
+}
+
+.dropdown p {
+  margin: 0;
+  word-break: break-all;
+  font-size: 12px;
+  color: #888;
+}
+
+.balance {
+  font-size: 51px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.transact-buttons {
+  display: flex;
+  gap: 3%;
+}
+
+.transact-buttons button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18px;
+  width: 120px;
+}
+
+.transact-buttons button img {
+  margin-right: 9px;
+  width: 19px;
+  height: 19px;
+  background: none;
+}
+
+.reload {
+  background-color: #27A431;
+  color: white;
+}
+
+.reload:hover{
+  background-color: #27A470;
+}
+
+.send {
+  background-color: #27A431;
+  color: white;
+}
+
+.send:hover{
+  background-color: #27A470;
+}
+
+.qr{
+  margin-right: 6%;
+}
+.qr img {
+  width: 120px;
+  height: 120px;
+}
+
+@media (max-width: 768px) {
+  .wallet-container{
+    margin-top: 50px;
+  }
+
+  .dropdown{
+    width: 100%;
+  }
+
+  .transact-buttons button{
+    width: 90px;
+    font-size: 16px;
+  }
+
+  .transact-buttons button img{
+    width: 15px;
+    height: 15px;
+  }
+
+  .qr img {
+    width: 90px;
+    height: 90px;
+  }
+}

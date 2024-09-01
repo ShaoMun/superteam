@@ -10,6 +10,7 @@
     height: 100vh;
     position: relative;
     transition: transform 0.3s ease-in-out;
+    position: fixed;
   }
   
   .sidebar-upper ul,
@@ -17,7 +18,7 @@
     list-style: none;
     padding: 0;
     margin: 0;
-    margin-left: 1.2%;
+    margin-left: 1.5%;
   }
   
   .sidebar-upper ul a,
@@ -25,20 +26,31 @@
     text-decoration: none;
     color: #fff;
   }
+
+  .sidebar-lower ul{
+    margin-bottom: 6%;
+  }
   
-  .sidebar-upper ul a li,
-  .sidebar-lower ul a li {
-    padding: 12px;
+  .sidebar-upper ul a li{
+    padding: 6px 12px;
     cursor: pointer;
   }
 
+  .sidebar-lower ul a li{
+    padding: 9px 12px;
+    cursor: pointer;
+  }
+
+
   .sidebar-upper ul a li img{
-    width: 22%;
+    width: 21%;
     display: inline-block;
+    margin: 0;
   }
   
   .sidebar-upper ul a li:hover,
-  .sidebar-lower ul a li:hover {
+  .sidebar-lower ul a li:hover,
+  .sidebar-upper ul a li:hover img {
     background-color: #232323;
   }
   
@@ -46,7 +58,8 @@
     width: 66%;
     padding: 10px;
     display: block;
-    margin-left: 1.5%;
+    margin-left: 1.9%;
+    margin-top: 2%;
   }
   
   .sidebar-lower button {
@@ -81,7 +94,7 @@
   .hamburger {
     display: none; /* Initially hidden */
     position: absolute;
-    top: 54px;
+    top: 15px;
     left: 18px;
     cursor: pointer;
     z-index: 1000;
@@ -96,20 +109,23 @@
   /* Media query for smaller screens */
   @media (max-width: 768px) {
     .sidebar-container {
-      transform: translateX(-200%); /* Hide the sidebar off-screen */
+      display: none;
       justify-content: space-between;
       font-size: medium;
-      width: 42%;
-      height: 92vh;
+      width: 100%;
+      height: 95vh;
+      z-index: 999;
+
     }
   
     .hamburger {
       display: block; /* Show the hamburger icon */
+      position: fixed;
     }
   
 
-  .sidebar-upper ul{
-    margin-top: 24%;
+  .sidebar-upper ul a li img{
+    width: 14%;
   }
 
   .sidebar-upper img{
@@ -120,6 +136,7 @@
     display: none;
   }
 
+
   .social-media img {
     width: 24px;
     height: 24px;
@@ -128,7 +145,9 @@
   /* When the sidebar is active (toggle class) */
   .sidebar-container.active {
     transform: translateX(0); /* Show the sidebar */
-
+    display: flex;
+    position: fixed;
+    top: 50px;
   }
   
 }

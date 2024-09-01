@@ -1,0 +1,81 @@
+.dashboard {
+    padding: 1rem;
+    color: white;
+    min-height: 100vh;
+    margin-left: 3%;
+}
+  
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Default to two columns */
+    gap: 1rem;
+}
+
+
+  
+h1,
+h2,
+h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+h3{
+    margin-top: 3rem;
+}
+  
+  
+.chart-container {
+    height: 16rem;
+    margin: 0;
+}
+  
+.transaction-table,
+.asset-table {
+    border: 5px solid gray;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 0rem;
+}
+  
+.transaction-table th,
+.asset-table th {
+    text-align: left;
+    padding: 0.3rem;
+    margin-top: 0;
+    background-color: gray;
+}
+  
+.transaction-table td,
+.asset-table td {
+    padding: 0.5rem;
+}
+  
+.view-all {
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    display: block;
+    background-color: gray;
+}
+  
+.view-all:hover {
+    color: #4299e1;
+}
+
+
+@media (max-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr; /* Change to one column on small screens */
+    }
+
+    .dashboard{
+        margin-left: 0;
+    }
+
+    h2,
+    h3{
+        margin-top: 3.3rem;
+    }
+}

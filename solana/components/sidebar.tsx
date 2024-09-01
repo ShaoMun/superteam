@@ -28,31 +28,31 @@ const Sidebar = () => {
                         </a>
                         <a href="/explore">
                             <li>
-                                <img src="path-to-explore-icon.svg" alt="Explore Icon" className="nav-icon"/>
+                                <img src="../../explore-icon.png" alt="Explore Icon" className="nav-icon"/>
                                 Explore
                             </li>
                         </a>
                         <a href="/swap">
                             <li>
-                                <img src="path-to-swap-icon.svg" alt="Swap Icon" className="nav-icon"/>
+                                <img src="../../swap-icon.png" alt="Swap Icon" className="nav-icon"/>
                                 Swap
                             </li>
                         </a>
                         <a href="/bridge">
                             <li>
-                                <img src="path-to-bridge-icon.svg" alt="Bridge Icon" className="nav-icon"/>
+                                <img src="../../bridge-icon.png" alt="Bridge Icon" className="nav-icon"/>
                                 Bridge
                             </li>
                         </a>
                         <a href="/stakestep">
                             <li>
-                                <img src="path-to-stake-step-icon.svg" alt="Stake STEP Icon" className="nav-icon"/>
+                                <img src="../../stake-icon.png" alt="Stake STEP Icon" className="nav-icon"/>
                                 Stake STEP
                             </li>
                         </a>
                         <a href="/stakesol">
                             <li>
-                                <img src="path-to-stake-sol-icon.svg" alt="Stake SOL Icon" className="nav-icon"/>
+                                <img src="../../stake-icon.png" alt="Stake SOL Icon" className="nav-icon"/>
                                 Stake SOL
                             </li>
                         </a>

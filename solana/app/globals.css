@@ -2,14 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
 
-
-body {
-  background-color: black;
-  color: white;
-}
-.page-container {
-  display: flex;
+@layer base {
+  body {
+    @apply bg-black text-white font-ubuntu;
+  }
 }
 
 @layer utilities {
@@ -18,8 +16,20 @@ body {
   }
 }
 
+/* Additional custom classes */
+.page-container {
+  @apply flex;
+}
+
 @media (max-width: 768px) {
   .page-container {
-    flex-direction: column; /* Adjust layout for small screens */
+    @apply flex-col; /* Adjust layout for small screens */
+  }
+}
+
+/* Defining a custom font family in Tailwind */
+@layer base {
+  .font-ubuntu {
+    font-family: 'Ubuntu', sans-serif;
   }
 }
