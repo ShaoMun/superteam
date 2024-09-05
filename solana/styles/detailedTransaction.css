@@ -1,17 +1,17 @@
-.transact-container {
+.transact-container2 {
     margin-top: 2%;
     margin-left: 3.3%;
     margin-bottom: 2%;
   }
   
   /* Container to handle horizontal overflow gracefully */
-  .table-container {
+  .table-container2 {
     width: 95%;
     border-collapse: collapse;
   }
   
   /* Ensure the table fits within the container */
-  .transaction-table {
+  .transaction-table2 {
     width: 100%;
     border-collapse: collapse;
     table-layout: fixed; /* Fixes table layout to prevent overflow */
@@ -21,7 +21,7 @@
   }
   
   /* Styling for table header */
-  .transaction-table th {
+  .transaction-table2 th {
     background-color: #2d2d2d; /* Slightly lighter background for header */
     color: #ffffff; /* White text color */
     padding: 10px;
@@ -30,19 +30,19 @@
   }
   
   /* Specific widths for columns */
-  .transaction-table th.date,
-  .transaction-table td.date,
-  .transaction-table th.time,
-  .transaction-table td.time,
-  .transaction-table th.status,
-  .transaction-table td.status,
-  .transaction-table th.amount,
-  .transaction-table td.amount {
+  .transaction-table2 th.date2,
+  .transaction-table2 td.date2,
+  .transaction-table2 th.time2,
+  .transaction-table2 td.time2,
+  .transaction-table2 th.status2,
+  .transaction-table2 td.status2,
+  .transaction-table2 th.amount2,
+  .transaction-table2 td.amount2 {
     width: 10%; /* Adjust width as needed */
   }
   
   /* Styling for table data cells */
-  .transaction-table td {
+  .transaction-table2 td {
     background-color: black;
     border-bottom: 3px solid #2d2d2d;
     padding: 12px 10px;
@@ -53,18 +53,17 @@
     overflow-wrap: break-word; /* Ensures content wraps within the cell */
   }
   
-  
   /* Pagination and filter styles */
-  .filters {
+  .filters2 {
     margin-bottom: 1rem;
     color: #ffffff;
   }
   
-  .filters label {
+  .filters2 label {
     margin-right: 0.5rem;
   }
   
-  .filters select {
+  .filters2 select {
     margin-right: 1rem;
     background-color: #444; /* Dark background for select elements */
     color: #ffffff; /* White text color */
@@ -72,7 +71,7 @@
     padding: 3px;
   }
   
-  .pagination {
+  .pagination2 {
     margin-top: 1rem;
     width: 95%;
     display: flex;
@@ -80,7 +79,7 @@
     align-items: center;
   }
   
-  .pagination button {
+  .pagination2 button {
     padding: 0.5rem 1rem;
     border: 1px solid #666; /* Border color matching the theme */
     background-color: #444; /* Dark background color */
@@ -88,8 +87,66 @@
     cursor: pointer;
   }
   
-  .pagination button:disabled {
+  .pagination2 button:disabled {
     cursor: not-allowed;
     opacity: 0.5;
+  }
+  
+  /* Mobile view adjustments */
+  @media (max-width: 768px) {
+    .table-container2 {
+      font-size: 0.8rem;
+    }
+  
+    .transaction-table2 thead {
+      display: none;
+    }
+  
+    .transaction-table2 {
+      border: 0.6rem solid #2d2d2d;
+    }
+  
+    .transaction-table2 tr {
+      width: 100%;
+      margin-bottom: 10px;
+      background-color: #2d2d2d;
+      border-radius: 5px;
+      border-bottom: 9px solid #2d2d2d;
+    }
+  
+    /* Styling for each row in card format */
+    .transaction-table2 td {
+      display: flex;
+      flex-direction: column;
+      max-width: 100%;
+      border-bottom: none;
+      padding: 6px 5px;
+    }
+  
+    .transaction-table2 td:before {
+      content: attr(data-label); /* Add the label from the attribute */
+      font-weight: bold;
+      text-transform: uppercase;
+      color: #dc6565;
+    }
+  
+    /* Adjust the table data for each cell to stack */
+    .transaction-table2 td.date2,
+    .transaction-table2 td.time2,
+    .transaction-table2 td.status2,
+    .transaction-table2 td.amount2 {
+      width: 100%;
+    }
+  
+    /* Pagination style for mobile */
+    .pagination2 {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+    }
+  
+    .pagination2 span {
+      font-size: 14px;
+    }
   }
   

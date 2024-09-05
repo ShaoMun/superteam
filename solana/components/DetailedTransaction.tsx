@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { useWallet, useConnection } from '@solana/wallet-adapter-react';
-import { getDetailedTransactionInfo } from '../utils/solana'; // Adjust the import path as needed
-import '../styles/detailedTransaction.css'
+import { getDetailedTransactionInfo } from '../utils/solana';
+import '../styles/detailedTransaction.css';
 
 interface Transaction {
   date: string;
@@ -20,11 +20,32 @@ const DetailedTransactionList: React.FC = () => {
   const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-  const [transactionsPerPage] = useState(5);
+  const [transactionsPerPage, setTransactionsPerPage] = useState(5); // Default 5 for larger screens
   const [yearFilter, setYearFilter] = useState<string>('');
   const [monthFilter, setMonthFilter] = useState<string>('');
   const { publicKey } = useWallet();
   const { connection } = useConnection();
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 768) {
+        setTransactionsPerPage(3); // Show 3 transactions per page on small screens
+      } else {
+        setTransactionsPerPage(5); // Default 5 for larger screens
+      }
+    };
+
+    // Attach the resize listener
+    window.addEventListener('resize', handleResize);
+
+    // Call it initially to set the correct transactionsPerPage
+    handleResize();
+
+    // Clean up the event listener
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -45,7 +66,6 @@ const DetailedTransactionList: React.FC = () => {
   }, [publicKey, connection]);
 
   useEffect(() => {
-    // Filter transactions based on year and month
     let filtered = transactions;
 
     if (yearFilter) {
@@ -93,8 +113,9 @@ const DetailedTransactionList: React.FC = () => {
   }
 
   return (
-    <div className="transact-container">      
-      <div className="filters">
+    <div className="transact-container2">
+      {/* Filter UI */}
+      <div className="filters2">
         <label htmlFor="year">Year:</label>
         <select id="year" value={yearFilter} onChange={handleYearChange}>
           <option value="">All Years</option>
@@ -112,14 +133,15 @@ const DetailedTransactionList: React.FC = () => {
         </select>
       </div>
 
-      <div className="table-container">
-        <table className="transaction-table">
+      {/* Transaction Table */}
+      <div className="table-container2">
+        <table className="transaction-table2">
           <thead>
             <tr>
-            <th className="date">Date</th>
-              <th className="time">Time</th>
-              <th className="status">Status</th>
-              <th className="amount">Amount</th>
+              <th className="date2">Date</th>
+              <th className="time2">Time</th>
+              <th className="status2">Status</th>
+              <th className="amount2">Amount</th>
               <th>Source</th>
               <th>Destination</th>
               <th>Signature</th>
@@ -129,13 +151,13 @@ const DetailedTransactionList: React.FC = () => {
             {currentTransactions.length > 0 ? (
               currentTransactions.map((tx, index) => (
                 <tr key={index}>
-                  <td className="date">{tx.date}</td>
-                  <td className="time">{tx.time}</td>
-                  <td className="status">{tx.status}</td>
-                  <td className="amount">{tx.amount.toFixed(4)} SOL</td>
-                  <td>{tx.source}</td>
-                  <td>{tx.destination}</td>
-                  <td>{tx.signature}</td>
+                  <td className="date2" data-label="Date">{tx.date}</td>
+                  <td className="time2" data-label="Time">{tx.time}</td>
+                  <td className="status2" data-label="Status">{tx.status}</td>
+                  <td className="amount2" data-label="Amount">{tx.amount.toFixed(4)} SOL</td>
+                  <td data-label="Source">{tx.source}</td>
+                  <td data-label="Destination">{tx.destination}</td>
+                  <td data-label="Signature">{tx.signature}</td>
                 </tr>
               ))
             ) : (
@@ -147,7 +169,8 @@ const DetailedTransactionList: React.FC = () => {
         </table>
       </div>
 
-      <div className="pagination">
+      {/* Pagination */}
+      <div className="pagination2">
         <button onClick={handlePrevious} disabled={page === 1}>Previous</button>
         <span>Page {page}</span>
         <button onClick={handleNext} disabled={indexOfLastTransaction >= filteredTransactions.length}>Next</button>

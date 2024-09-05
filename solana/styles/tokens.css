@@ -53,7 +53,7 @@ h3{
 }
   
 .view-all {
-    color: white;
+    color: rgb(104, 104, 200);
     text-decoration: none;
     text-align: center;
     display: block;
@@ -61,7 +61,7 @@ h3{
 }
   
 .view-all:hover {
-    color: #4299e1;
+    color: #51a7ed;
 }
 
 
