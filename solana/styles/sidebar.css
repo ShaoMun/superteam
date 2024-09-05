@@ -61,20 +61,7 @@
     margin-left: 1.9%;
     margin-top: 2%;
   }
-  
-  .sidebar-lower button {
-    margin: 10px;
-    padding: 10px;
-    background-color: #27A431;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-  }
-  
-  .sidebar-lower button:hover {
-    background-color: #27A470;
-  }
+
   
   .social-media {
     display: flex;

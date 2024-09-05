@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import '../styles/sidebar.css'
+import ConnectWalletButton from './ConnectWalletButton';
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -60,12 +61,13 @@ const Sidebar = () => {
                 </div>
 
                 <div className='sidebar-lower'>
+                <ConnectWalletButton />
+
                   <ul>
                     <a href=""><li>Reward Options</li></a>
                     <a href=""><li>Analytics</li></a>
                     <a href=""><li>Docs</li></a>
                   </ul>
-                  <button>Connect Wallet</button>
                   <ul className='social-media'>
                     <a href="https://x.com/StepFinance_" target="_blank"><li><img src="../../X.svg" alt="X" /></li></a>
                     <a href="https://discord.com/invite/Pab8wcH5Yt" target="_blank"><li><img src="../../discord.svg" alt="discord" /></li></a>

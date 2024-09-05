@@ -70,9 +70,7 @@ h3{
         grid-template-columns: 1fr; /* Change to one column on small screens */
     }
 
-    .transact-container{
-        display: none;
-    }
+
 
     .dashboard{
         margin-left: 0;

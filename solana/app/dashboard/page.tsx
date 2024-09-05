@@ -3,16 +3,18 @@
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import { PieChart, Pie, Cell } from 'recharts';
 import "../../styles/tokens.css"
+import TransactionList from "../../components/TransactionList";
+import TokenDistribution from '../../components/TokenDistribution';
 
 const Tokens = () => {
 
   // Dummy data for charts
   const performanceData = [
-    { name: '1d', value: 0 },
-    { name: '1w', value: 0 },
-    { name: '1m', value: 0 },
-    { name: '1y', value: 0 },
-    { name: 'Max', value: 0 },
+    { name: '1d', value: 1 },
+    { name: '1w', value: 2 },
+    { name: '1m', value: 5 },
+    { name: '1y', value: 3 },
+    { name: 'Max', value: 9 },
   ];
 
   const assetData = [
@@ -40,26 +42,7 @@ const Tokens = () => {
           </div>
         </div> 
 
-        <div className="dashboard-item transact-container">
-          <h2>Recent Transactions</h2>
-          <table className="transaction-table">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Type</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>24 Feb 2025 01:15</td>
-                <td>Received</td>
-                <td>1SOL</td>
-              </tr>
-            </tbody>
-          </table>
-          <a href="#" className="view-all">View all transactions &gt;</a>
-        </div>   
+        <TransactionList/>   
       </div>
 
       
@@ -88,38 +71,7 @@ const Tokens = () => {
           </div>
         </div>
         
-        <div className="dashboard-item">
-          <table className="asset-table">
-            <thead>
-              <tr>
-                <th>Asset</th>
-                <th>Amount</th>
-                <th>Price</th>
-                <th>Value</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Solana</td>
-                <td>10</td>
-                <td>$20</td>
-                <td>$200</td>
-              </tr>
-              <tr>
-                <td>Ethereum</td>
-                <td>0.5</td>
-                <td>$3000</td>
-                <td>$1500</td>
-              </tr>
-              <tr>
-                <td>Bitcoin</td>
-                <td>0.01</td>
-                <td>$50000</td>
-                <td>$500</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <TokenDistribution/>
       </div>
     </div>
   );
