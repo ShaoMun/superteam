@@ -29,6 +29,7 @@ h3{
 .chart-container {
     height: 16rem;
     margin: 0;
+    z-index: 10000;
 }
   
 .transaction-table,

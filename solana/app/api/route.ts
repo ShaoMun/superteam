@@ -2,7 +2,9 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { getBalance, getTransactionHistory, getTokenDistribution } from '../../utils/solana';
 import { Connection, PublicKey, Transaction, SystemProgram, LAMPORTS_PER_SOL } from '@solana/web3.js';
 
-const CONNECTION_URL = 'https://api.devnet.solana.com';
+// Alchemy Connection setup
+const ALCHEMY_API_KEY = 'aVbNyel3GL5lyN1gTYu3vo471--R0l-W';
+const CONNECTION_URL = `https://solana-devnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`;
 const connection = new Connection(CONNECTION_URL);
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -55,15 +57,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       transaction.recentBlockhash = blockhash;
       transaction.feePayer = fromPubkey;
 
-      // Estimate the fee
-      const fees = await transaction.getEstimatedFee(connection);
-
+      // Serialize transaction for client-side signing
       const serializedTransaction = transaction.serialize({ requireAllSignatures: false });
       const transactionBase64 = serializedTransaction.toString('base64');
 
       res.status(200).json({ 
         transaction: transactionBase64,
-        fees,
         lastValidBlockHeight
       });
     } catch (error) {

@@ -2,8 +2,9 @@ import { Connection, PublicKey, Transaction, SystemProgram, sendAndConfirmTransa
 import { Metadata } from '@metaplex-foundation/mpl-token-metadata';
 import axios from 'axios';
 
-// Connection setup
-const CONNECTION_URL = 'https://api.devnet.solana.com';
+// Connection setup with Alchemy
+const ALCHEMY_API_KEY = 'aVbNyel3GL5lyN1gTYu3vo471--R0l-W';
+const CONNECTION_URL = `https://solana-devnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`;
 const connection = new Connection(CONNECTION_URL);
 
 // Define the Metaplex Token Metadata Program ID
@@ -164,7 +165,7 @@ const COINGECKO_API_URL = 'https://api.coingecko.com/api/v3/simple/price';
 
 export const getTokenPerformance = async (tokenAddresses: string[]) => {
     const tokenIds = tokenAddresses.map(address => {
-        return 'solana';
+        return 'solana'; // Replace with specific token IDs if needed
     });
 
     const response = await axios.get(COINGECKO_API_URL, {

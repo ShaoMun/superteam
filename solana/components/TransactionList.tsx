@@ -21,7 +21,7 @@ const TransactionList: React.FC = () => {
 
       setLoading(true);
       try {
-        const txs = await getTransactionHistory(publicKey.toString());
+        const txs = await getTransactionHistoryWithRetry(publicKey.toString());
         setTransactions(txs);
       } catch (error) {
         console.error('Failed to fetch transactions:', error);
@@ -31,6 +31,24 @@ const TransactionList: React.FC = () => {
 
     fetchTransactions();
   }, [publicKey, connection]);
+
+  // Retry logic with exponential backoff
+  const getTransactionHistoryWithRetry = async (publicKey: string, retries = 3, delay = 1000) => {
+    for (let i = 0; i < retries; i++) {
+      try {
+        const txs = await getTransactionHistory(publicKey);
+        return txs;
+      } catch (err: any) {
+        if (err.code === 429 && i < retries - 1) {
+          console.warn(`Rate limit hit, retrying in ${delay}ms...`);
+          await new Promise(res => setTimeout(res, delay));
+          delay *= 2; // Exponential backoff
+        } else {
+          throw err;
+        }
+      }
+    }
+  };
 
   if (!publicKey) {
     return <p>Please connect your wallet to view transactions.</p>;
