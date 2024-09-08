@@ -1,0 +1,162 @@
+/* styles/nft.css */
+
+/* Container for the NFT gallery */
+.nft-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.nft-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Styling for the heading */
+.NFT-title {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 3rem;
+}
+
+
+/* Styling for each NFT box */
+.box {
+    width: calc(33.333% - 20px);
+    max-width: 333px;
+    aspect-ratio: 1;
+    border: 3px solid #1b649d;
+    border-radius: 8px;
+    box-shadow: 0 0 30px rgba(158, 158, 237, 0.5);
+    background-color: #202427;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect for the NFT boxes */
+.box:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(158, 158, 237, 0.8);
+}
+
+/* Styling for the modal overlay */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Styling for the modal content */
+.modalContent {
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    background-color: #202427;
+    border-radius: 12px;
+    padding: 30px;
+    position: relative;
+    border: 3px solid #1b649d;
+    box-shadow: 0 0 30px rgba(158, 158, 237, 0.8);
+    overflow-y: auto;
+}
+
+/* Close button styling */
+.closeButton {
+    position: absolute;
+    top: 3px;
+    right: 6px;
+    font-size: 30px;
+    cursor: pointer;
+    color: #ffffff;
+    background: none;
+    border: none;
+    transition: color 0.3s ease;
+}
+
+.closeButton:hover {
+    color: #FF5722;
+}
+
+/* Styling for the modal main content */
+.modalMain {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Styling for the modal image */
+.modalImage {
+    width: 100%;
+    max-height: 60vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.modalImage img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Styling for the modal information */
+.modalInfo {
+    color: #ffffff;
+}
+
+.modalInfo p {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+/* Styling for strong text */
+.strong {
+    color: #FF5722;
+    font-weight: bold;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    .box {
+        width: calc(50% - 15px);
+    }
+
+    .modalContent {
+        padding: 20px;
+    }
+
+    .modalImage {
+        max-height: 40vh;
+    }
+}
+
+/* Media query for mobile screens */
+@media (max-width: 480px) {
+    .box {
+        width: 100%;
+    }
+
+    .modalContent {
+        padding: 15px;
+    }
+
+    .span {
+        font-size: 36px;
+    }
+}

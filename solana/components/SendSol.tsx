@@ -68,7 +68,7 @@ const SendSol: React.FC = () => {
   }
 
   return (
-    <div className="send-sol-container">
+    <div className="send-sol-container animated-container">
       <form onSubmit={handleSendSol}>
         <h3 className="form-title">Send</h3>
 

@@ -165,11 +165,35 @@
   background: #2d2d2d;
   padding: 20px;
   border: 6px solid;
-  border-image: repeating-conic-gradient(#9945ffcd 30%, #14f195c8 60%) 1;
   border-radius: 10px;
   width: 30%;
   height: 80%;
   position: relative;
+  animation: borderAnimation 2s linear infinite;
+}
+
+/* Animated border using keyframes */
+@keyframes borderAnimation {
+  0% {
+    border-image: linear-gradient(90deg, #9945FF, #14F195);
+    border-image-slice: 1;
+}
+25% {
+    border-image: linear-gradient(180deg, #9945FF, #14F195);
+    border-image-slice: 1;
+}
+50% {
+    border-image: linear-gradient(270deg, #9945FF, #14F195);
+    border-image-slice: 1;
+}
+75% {
+    border-image: linear-gradient(360deg, #9945FF, #14F195);
+    border-image-slice: 1;
+}
+100% {
+    border-image: linear-gradient(90deg, #9945FF, #14F195);
+    border-image-slice: 1;
+}
 }
 
 /* Close button styling */

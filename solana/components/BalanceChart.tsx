@@ -1,4 +1,4 @@
-// components/BalanceChart.tsx
+// BalanceChart.tsx
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -8,13 +8,14 @@ interface BalanceChartProps {
 
 const BalanceChart: React.FC<BalanceChartProps> = ({ data }) => (
   <div className="chart-container">
-    <ResponsiveContainer width="100%" height="100%">
+    <ResponsiveContainer width="100%" height={280}>
       <LineChart data={data}>
         <XAxis
           dataKey="date"
           type="number"
           domain={['dataMin', 'dataMax']}
           tickFormatter={(unixTime) => new Date(unixTime).toLocaleDateString()}
+          scale="time" // Ensures consistent intervals
         />
         <YAxis />
         <Tooltip

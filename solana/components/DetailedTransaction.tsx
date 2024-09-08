@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 import { getDetailedTransactionInfo } from '../utils/solana';
 import '../styles/detailedTransaction.css';
+import WalletConnectionError from '../components/WalletConnectionError'; // Adjust the path as needed
 
 interface Transaction {
   date: string;
@@ -18,9 +19,10 @@ interface Transaction {
 const DetailedTransactionList: React.FC = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
-  const [transactionsPerPage, setTransactionsPerPage] = useState(5); // Default 5 for larger screens
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState<number>(1);
+  const [transactionsPerPage, setTransactionsPerPage] = useState<number>(5); // Default 5 for larger screens
   const [yearFilter, setYearFilter] = useState<string>('');
   const [monthFilter, setMonthFilter] = useState<string>('');
   const { publicKey } = useWallet();
@@ -49,17 +51,24 @@ const DetailedTransactionList: React.FC = () => {
 
   useEffect(() => {
     const fetchTransactions = async () => {
-      if (!publicKey) return;
+      if (!publicKey) {
+        setLoading(false);
+        return;
+      }
 
       setLoading(true);
+      setError(null);
+
       try {
         const txs = await getDetailedTransactionInfo(publicKey.toString());
         setTransactions(txs);
         setFilteredTransactions(txs); // Initial filter with all transactions
       } catch (error) {
         console.error('Failed to fetch transactions:', error);
+        setError('An error occurred while fetching transactions.');
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     fetchTransactions();
@@ -105,11 +114,15 @@ const DetailedTransactionList: React.FC = () => {
   };
 
   if (!publicKey) {
-    return <p>Please connect your wallet to view transactions.</p>;
+    return <WalletConnectionError />;
   }
 
   if (loading) {
-    return <p>Loading transactions...</p>;
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
   }
 
   return (

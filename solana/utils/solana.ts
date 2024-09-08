@@ -3,12 +3,26 @@ import { Metadata } from '@metaplex-foundation/mpl-token-metadata';
 import axios from 'axios';
 
 // Connection setup with Alchemy
-const ALCHEMY_API_KEY = 'aVbNyel3GL5lyN1gTYu3vo471--R0l-W';
+const ALCHEMY_API_KEY = 'AMfjI7mwc5HiXIffvgQK9dCsdOvozYVb';
 const CONNECTION_URL = `https://solana-devnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`;
 const connection = new Connection(CONNECTION_URL);
 
 // Define the Metaplex Token Metadata Program ID
 const METAPLEX_PROGRAM_ID = new PublicKey('metaqbxxUerdq28cj1RbAWkYQm5cL6W8u1Xo88w3Pq8');
+
+const retryWithBackoff = async (fn: () => Promise<any>, retries = 5, delay = 500) => {
+    try {
+        return await fn();  
+    } catch (error) {
+        if (retries === 0) throw error;
+        if (error.message.includes('429')) {
+            console.warn(`Server responded with 429. Retrying after ${delay}ms delay...`);
+            await new Promise(resolve => setTimeout(resolve, delay));
+            return retryWithBackoff(fn, retries - 1, delay * 2); // Exponential backoff
+        }
+        throw error;
+    }
+};
 
 // Function to get SOL balance
 export const getBalance = async (publicKey: string): Promise<number> => {
@@ -19,18 +33,21 @@ export const getBalance = async (publicKey: string): Promise<number> => {
 // Fetch Transaction History (Date, Time, Status, Amount)
 export const getTransactionHistory = async (publicKey: string) => {
     const pubKey = new PublicKey(publicKey);
-    const signatures = await connection.getSignaturesForAddress(pubKey, { limit: 5 });
+    const signatures = await retryWithBackoff(() => connection.getSignaturesForAddress(pubKey, { limit: 5 }));
 
     const transactions = await Promise.all(
         signatures.map(async (signatureInfo) => {
-            const transaction = await connection.getParsedTransaction(signatureInfo.signature, { commitment: 'confirmed' });
+            const transaction = await retryWithBackoff(() => connection.getParsedTransaction(signatureInfo.signature, {
+                commitment: 'confirmed',
+                maxSupportedTransactionVersion: 0, // Explicitly specify supported version
+            }));
+
             const blockTime = transaction?.blockTime;
             const date = blockTime ? new Date(blockTime * 1000).toLocaleDateString() : 'Unknown';
             const time = blockTime ? new Date(blockTime * 1000).toLocaleTimeString() : 'Unknown';
             const status = transaction?.meta?.err ? 'Failed' : 'Success';
 
             let amount = 0;
-
             if (transaction?.transaction?.message?.instructions) {
                 transaction.transaction.message.instructions.forEach((instruction: any) => {
                     if (instruction.programId.toBase58() === '11111111111111111111111111111111') {
@@ -45,12 +62,7 @@ export const getTransactionHistory = async (publicKey: string) => {
                 });
             }
 
-            return {
-                date,
-                time,
-                status,
-                amount,
-            };
+            return { date, time, status, amount };
         })
     );
 
@@ -59,11 +71,15 @@ export const getTransactionHistory = async (publicKey: string) => {
 
 export const getDetailedTransactionInfo = async (publicKey: string) => {
     const pubKey = new PublicKey(publicKey);
-    const signatures = await connection.getSignaturesForAddress(pubKey, { limit: 100 });
+    const signatures = await connection.getSignaturesForAddress(pubKey, { limit: 20 });
 
     const transactions = await Promise.all(
         signatures.map(async (signatureInfo) => {
-            const transaction = await connection.getParsedTransaction(signatureInfo.signature, { commitment: 'confirmed' });
+            const transaction = await connection.getParsedTransaction(signatureInfo.signature, {
+                commitment: 'confirmed',
+                maxSupportedTransactionVersion: 0, // Explicitly specify max supported transaction version
+            });
+
             const blockTime = transaction?.blockTime;
             const date = blockTime ? new Date(blockTime * 1000).toLocaleDateString() : 'Unknown';
             const time = blockTime ? new Date(blockTime * 1000).toLocaleTimeString() : 'Unknown';
@@ -106,39 +122,6 @@ export const getDetailedTransactionInfo = async (publicKey: string) => {
     return transactions;
 };
 
-// Fetch NFT Details
-export const getNFTDetails = async (mintAddress: string) => {
-    try {
-        const mintPublicKey = new PublicKey(mintAddress);
-
-        const [metadataPDA] = PublicKey.findProgramAddressSync(
-            [
-                Buffer.from('metadata'),
-                METAPLEX_PROGRAM_ID.toBuffer(),
-                mintPublicKey.toBuffer()
-            ],
-            METAPLEX_PROGRAM_ID
-        );
-
-        const metadataAccount = await Metadata.load(connection, metadataPDA);
-
-        const { data } = metadataAccount;
-
-        const response = await fetch(data.uri);
-        const offChainMetadata = await response.json();
-
-        return {
-            name: data.name,
-            symbol: data.symbol,
-            ...offChainMetadata,
-        };
-    } catch (error) {
-        console.error('Error fetching NFT details:', error);
-        throw error;
-    }
-};
-
-// Fetch Token Distribution
 export const getTokenDistribution = async (publicKey: string) => {
     const pubKey = new PublicKey(publicKey);
 
@@ -160,22 +143,50 @@ export const getTokenDistribution = async (publicKey: string) => {
     };
 };
 
-// Fetch Token Performance
-const COINGECKO_API_URL = 'https://api.coingecko.com/api/v3/simple/price';
+const COINGECKO_API_URL = 'https://api.coingecko.com/api/v3/coins/markets';
+const CACHE_DURATION = 60000; // 60 seconds
 
-export const getTokenPerformance = async (tokenAddresses: string[]) => {
-    const tokenIds = tokenAddresses.map(address => {
-        return 'solana'; // Replace with specific token IDs if needed
-    });
+let cache = {
+    data: null,
+    timestamp: 0
+};
 
-    const response = await axios.get(COINGECKO_API_URL, {
-        params: {
-            ids: tokenIds.join(','),
-            vs_currencies: 'usd'
-        }
-    });
+export const getSPLTokenPerformance = async () => {
+    const now = Date.now();
+    
+    // Check if the cached data is still valid
+    if (cache.data && (now - cache.timestamp < CACHE_DURATION)) {
+        return cache.data;
+    }
 
-    return response.data;
+    const splTokenIds = [
+        'solana', 'serum', 'raydium', 'msol', 'ftt', 
+        'step-finance', 'orca', 'marinade', 'saber', 
+        'cope', 'tulip-protocol', 'bonfida', 'kin', 
+        'samoyedcoin', 'maps', 'media-network', 'stars-token', 
+        'oxygen', 'port-finance'
+    ]; // Replace with SPL token IDs
+
+    try {
+        const response = await axios.get(COINGECKO_API_URL, {
+            params: {
+                vs_currency: 'usd',
+                ids: splTokenIds.join(','),
+                order: 'market_cap_desc',
+                per_page: splTokenIds.length, // Fetch up to the number of tokens in the array
+                page: 1,
+                price_change_percentage: '1h,24h,7d'
+            }
+        });
+        cache = {
+            data: response.data,
+            timestamp: now
+        };
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching token performance:', error);
+        return [];
+    }
 };
 
 // New function to send native SOL

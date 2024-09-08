@@ -7,6 +7,7 @@ import TransactionList from "../../components/TransactionList";
 import TokenDistribution from '../../components/TokenDistribution';
 import BalanceChart from '../../components/BalanceChart';
 import AssetDistributionChart from '../../components/AssetDistributionChart';
+import WalletConnectionError from '../../components/WalletConnectionError';
 import { getBalance, getDetailedTransactionInfo, getTokenDistribution } from '../../utils/solana';
 
 const Tokens: React.FC = () => {
@@ -22,7 +23,6 @@ const Tokens: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       if (!publicKey) {
-        setError('Please connect your wallet to view your tokens.');
         setIsLoading(false);
         return;
       }
@@ -32,18 +32,24 @@ const Tokens: React.FC = () => {
 
       try {
         const walletAddress = publicKey.toString();
-
         const balance = await getBalance(walletAddress);
         setCurrentBalance(balance);
 
         const transactions = await getDetailedTransactionInfo(walletAddress);
-        const balanceHistory = transactions.map((tx, index) => {
-          const runningBalance = balance - transactions.slice(0, index + 1).reduce((sum, t) => sum + t.amount, 0);
+
+        // Get the latest 6 days of transactions
+        const today = new Date().setHours(0, 0, 0, 0);
+        const lastSixDays = [...Array(5)].map((_, i) => today - i * 86400000);
+
+        const balanceHistory = lastSixDays.map((day) => {
+          const txOnDay = transactions.filter(tx => new Date(tx.date).setHours(0, 0, 0, 0) === day);
+          const dailyBalance = txOnDay.reduce((sum, t) => sum + t.amount, 0);
           return {
-            date: new Date(tx.date).getTime(),
-            balance: runningBalance
+            date: day,
+            balance: balance - dailyBalance,
           };
-        });
+        }).reverse();
+
         setBalanceData(balanceHistory);
 
         const distribution = await getTokenDistribution(walletAddress);
@@ -67,7 +73,7 @@ const Tokens: React.FC = () => {
   }, [publicKey, connection]);
 
   if (!publicKey) {
-    return <p>Please connect your wallet to view your tokens.</p>;
+    return <WalletConnectionError />;
   }
 
   if (isLoading) {

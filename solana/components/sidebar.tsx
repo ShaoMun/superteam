@@ -19,18 +19,18 @@ const Sidebar = () => {
           </div>
           <div className={`sidebar-container ${isOpen ? 'active' : ''}`}>
                 <div className='sidebar-upper'>
-                  <a href=""><img src='../../logo.png'/></a>
+                  <a href="/dashboard"><img src='../../logo.png'/></a>
                   <ul>
                         <a href="/dashboard">
                             <li >
                                 <img src="../../dashboard-icon.png" alt="Dashboard Icon" className="nav-icon"/>
                                 Dashboard
                             </li>
-                        </a>
-                        <a href="/explore">
+                        </a>                        
+                        <a href="/performance">
                             <li>
                                 <img src="../../explore-icon.png" alt="Explore Icon" className="nav-icon"/>
-                                Explore
+                                Performance
                             </li>
                         </a>
                         <a href="/swap">

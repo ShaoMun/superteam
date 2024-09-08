@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Copy, Eye, EyeOff } from 'lucide-react';
 import SendSol from './SendSol'; // Import the SendSol component
 import '../styles/walletStats.css';
@@ -10,8 +10,10 @@ const WalletStats: React.FC = () => {
   const [showSendSol, setShowSendSol] = useState(false); // State for SendSol modal visibility
   const [balance, setBalance] = useState<number | null>(null);
   const [balanceVisible, setBalanceVisible] = useState(true); // State to toggle balance visibility
-  const { publicKey } = useWallet();
+  const { publicKey, connect } = useWallet();
   const { connection } = useConnection();
+  const modalRef = useRef<HTMLDivElement>(null); // Ref for modal content
+  const dropdownRef = useRef<HTMLDivElement>(null); // Ref for wallet address dropdown
 
   const walletAddress = publicKey ? publicKey.toString() : '';
 
@@ -21,7 +23,6 @@ const WalletStats: React.FC = () => {
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(walletAddress);
-    // You might want to add a toast notification here
   };
 
   const toggleSendSol = () => {
@@ -50,25 +51,60 @@ const WalletStats: React.FC = () => {
     return () => clearInterval(id);
   }, [publicKey, connection]);
 
-  if (!publicKey) {
-    return <p>Please connect your wallet to view balance and other details.</p>;
-  }
+  // Event listener to close modal on click outside
+  useEffect(() => {
+    const handleClickOutsideModal = (event: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        setShowSendSol(false); // Close modal if clicked outside
+      }
+    };
+
+    if (showSendSol) {
+      document.addEventListener('mousedown', handleClickOutsideModal);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutsideModal);
+    };
+  }, [showSendSol]);
+
+  // Event listener to close dropdown on click outside
+  useEffect(() => {
+    const handleClickOutsideDropdown = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowDropdown(false); // Close dropdown if clicked outside
+      }
+    };
+
+    if (showDropdown) {
+      document.addEventListener('mousedown', handleClickOutsideDropdown);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutsideDropdown);
+    };
+  }, [showDropdown]);
+
+  // Placeholder for when no wallet connection exists but keep UI
+  const isWalletConnected = !!publicKey;
 
   return (
     <div className='wallet-container'>
       <div className='wallet-detail'>
         <div className='wallet-address'>
-          {truncateAddress(walletAddress)}
+          {isWalletConnected
+            ? truncateAddress(walletAddress)
+            : 'Your Wallet Address'}
           <button onClick={() => setShowDropdown(!showDropdown)}>
             <img src="/down-arrow.png" alt="Toggle address" />
           </button>
           {showDropdown && (
-            <div className='dropdown'>
+            <div className='dropdown' ref={dropdownRef}>
               <div className='copy-address'>
-                <button onClick={copyToClipboard}>
+                <button onClick={copyToClipboard} disabled={!isWalletConnected}>
                   <Copy size={16} />
                   Copy
-                  <p>{walletAddress}</p>
+                  <p>{isWalletConnected ? walletAddress : 'No Address'}</p>
                 </button>
               </div>
             </div>
@@ -77,7 +113,7 @@ const WalletStats: React.FC = () => {
         <div className='balance-container'>
           <div className='balance'>
             {balanceVisible ? (
-              balance !== null ? `${balance.toFixed(4)}` : 'Loading...'
+              isWalletConnected ? `${balance?.toFixed(4)}` : '0.0000'
             ) : (
               '••••••••'
             )}
@@ -87,24 +123,28 @@ const WalletStats: React.FC = () => {
           </button>
         </div>
         <div className='transact-buttons'>
-          <button className='reload'>
+          <button className='reload' disabled={!isWalletConnected}>
             <img src="/reload.png" alt="Reload" />
             Reload
           </button>
-          <button className='send' onClick={toggleSendSol}>
+          <button className='send' onClick={toggleSendSol} disabled={!isWalletConnected}>
             <img src="/send.png" alt="Send" />
             Send
           </button>
         </div>
       </div>
       <div className='qr'>
-        <QRCodeDisplay publicKey={walletAddress} />
+        {isWalletConnected ? (
+          <QRCodeDisplay publicKey={walletAddress} />
+        ) : (
+          <img src="/placeholder-qr.png" alt="No QR Code" className='placeholder-image' />
+        )}
       </div>
-      
+
       {/* SendSol Modal */}
-      {showSendSol && (
+      {showSendSol && isWalletConnected && (
         <div className='modal-overlay'>
-          <div className='modal-content'>
+          <div className='modal-content' ref={modalRef}>
             <button className='close' onClick={toggleSendSol}>X</button>
             <SendSol />
           </div>
