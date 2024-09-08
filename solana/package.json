@@ -10,11 +10,13 @@
   },
   "dependencies": {
     "@metaplex-foundation/mpl-token-metadata": "^3.2.1",
+    "framer-motion": "^11.5.4",
     "lucide-react": "^0.436.0",
     "next": "14.2.7",
     "react": "^18",
     "react-dom": "^18",
-    "styled-components": "^6.1.13"
+    "styled-components": "^6.1.13",
+    "three": "^0.168.0"
   },
   "devDependencies": {
     "@types/node": "^20",
